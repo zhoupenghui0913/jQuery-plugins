@@ -6,7 +6,7 @@
 
 
 ###1、回到顶部
-预览：[回到顶部效果](https://zhoupenghui0913.github.io/回到顶部插件/index.html)
+预览：[回到顶部效果](https://zhoupenghui0913.github.io/jQuery-plugins/gotop/index.html)
 
 #### Usage
 
@@ -17,7 +17,7 @@ $('body').gotop();
 
 ### 2、图片懒加载
 
-预览：[懒加载效果](https://zhoupenghui0913.github.io/曝光加载插件/index.html)
+预览：[懒加载效果](https://zhoupenghui0913.github.io/jQuery-plugins/lazyload/index.html)
 
 #### Usage
 
@@ -29,7 +29,7 @@ $(".container").find('img').lazyLoad();
 
 ### 3、轮播
 
-预览：[轮播效果](https://zhoupenghui0913.github.io/轮播插件/index.html)
+预览：[轮播效果](https://zhoupenghui0913.github.io/jQuery-plugins/slide/index.html)
 
 #### 简介
 
@@ -45,7 +45,7 @@ $(".carousel").slide();
 
 ###4、stickup
 
-预览：[stickUp效果](https://zhoupenghui0913.github.io/StickUp插件/index.html)
+预览：[stickUp效果](https://zhoupenghui0913.github.io/jQuery-plugins/stickup/index.html)
 
 #### Usage
 
@@ -68,7 +68,7 @@ $('.ct').find(".nav").stickup();
 
 ###5、瀑布流布局
 
-预览：[瀑布流效果](https://zhoupenghui0913.github.io/瀑布流插件/index.html)
+预览：[瀑布流效果](https://zhoupenghui0913.github.io/jQuery-plugins/waterfall/index.html)
 
 #### Usage
 
@@ -79,7 +79,7 @@ $('.ct').find('.item').waterFall( $('.ct') );
 
 ###6、tab切换
 
-预览：[tab切换效果](https://zhoupenghui0913.github.io/tab切换插件/index.html)
+预览：[tab切换效果](https://zhoupenghui0913.github.io/jQuery-plugins/tabchange/index.html)
 
 #### Usage
 
