@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<title>回到顶部</title>
+	<style>
+		p{
+			line-height: 3;
+		}
+		div#go-top{
+			position: fixed;
+			top: 560px;
+			right: 30px;
+			border: 1px solid red;
+			border-radius: 3px;
+			padding: 10px 20px;
+			cursor: pointer;
+			display: none;
+		}
+	</style>
+</head>
+<body>
+	<p>内容1</p>
+	<p>内容2</p>
+	<p>内容3</p>
+	<p>内容4</p>
+	<p>内容5</p>
+	<p>内容6</p>
+	<p>内容7</p>
+	<p>内容8</p>
+	<p>内容9</p>
+	<p>内容10</p>
+	<p>内容11</p>
+	<p>内容12</p>
+	<p>内容13</p>
+	<p>内容14</p>
+	<p>内容15</p>
+	<p>内容16</p>
+	<p>内容17</p>
+	<p>内容18</p>
+	<p>内容19</p>
+	<p>内容20</p>
+	<script src="../jquery-2.2.3.js"></script>
+	<script>
+     	/*
+     	// 意大利面条代码
+ 		var $goTop = $('<div id="go-top">回到顶部</div>');
+ 		$("body").append($goTop);
+
+ 		$(window).on('scroll', function(){
+ 			var scrollTop = $(window).scrollTop();  //获取窗口滚动的距离
+ 			if(scrollTop>100){
+ 				$goTop.show();
+ 			}else{
+ 				$goTop.hide();
+ 			}
+ 		});
+
+ 		$goTop.on('click', function(){
+ 			$(window).scrollTop(0);
+ 		});
+     	
+ 		*/
+
+     	/*
+     	//简单的单例模式，毫无封装性，成员暴露，初始化占资源
+ 		var GoTop = {
+ 			init: function(){
+ 				if( $("#go-top").length ){  //检查页面中是否已经存在这个元素，避免重复绑定
+ 					return;
+ 				}
+ 				var $goTop = $('<div id="go-top">回到顶部</div>');
+ 				$("body").append($goTop); 
+
+ 				this.$go = $goTop; 
+ 				this.bind();
+ 			},
+ 			bind: function(){
+ 				var self = this;
+ 				$(window).on('scroll', function(){
+	     			var scrollTop = $(window).scrollTop();
+	     			if(scrollTop>100){
+	     				self.$go.show();  
+	     			}else{
+	     				self.$go.hide();
+	     			}
+	     		});
+	     		this.$go.on('click', function(){
+	     			$(window).scrollTop(0);
+	     		});
+ 			}
+ 		};
+ 		GoTop.init();  //调用方法
+ 		*/
+
+ 		/*
+ 		// 模块模式，封装私有变量，只暴露公共接口
+ 		var GoTop = (function(){
+ 			var $goTop = $('<div id="go-top">回到顶部</div>');
+ 			function init(){
+ 				if( $("#go-top").length ){  //检查页面中是否已经存在这个元素，避免重复绑定
+ 					return;
+ 				}
+ 				$("body").append($goTop); 
+ 				bind();  //给实例对象绑定方法
+ 			}
+ 			function bind(){
+ 				$(window).on('scroll', function(){
+	     			var scrollTop = $(window).scrollTop();
+	     			if(scrollTop>100){
+	     				$goTop.show();  
+	     			}else{
+	     				$goTop.hide();
+	     			}
+	     		});
+	     		$goTop.on('click', function(){
+	     			$(window).scrollTop(0);
+	     		});
+ 			}
+ 			return{
+ 				init: init
+ 			};
+ 		})();
+ 		GoTop.init();
+ 		*/
+
+     	// 用构造函数模式封装成一个插件，面向对象的代码
+     	$.fn.gotop = function(){
+     		function GoTop($node){
+	     		this.$ct = $node;  // gotop对应的元素的容器
+	     		this.$target;  // gotop对应的元素
+
+	     		this.createNode();
+	     		this.bindEvent();
+	     	}
+	     	GoTop.prototype.createNode = function(){
+	     		this.$target = $('<div id="go-top">回到顶部</div>');
+	     		this.$ct.append(this.$target); 
+	     	};
+	     	GoTop.prototype.bindEvent = function(){
+	     		var self = this;
+	     		$(window).on('scroll', function(){
+	     			var scrollTop = $(window).scrollTop();
+	     			if(scrollTop>100){
+	     				self.$target.show();  
+	     			}else{
+	     				self.$target.hide();
+	     			}
+	     		});
+	     		this.$target.on('click', function(){
+	     			$(window).scrollTop(0);
+	     		});
+	     	};
+	     	new GoTop( this );
+	     };
+
+     	$('body').gotop();  //调用插件方法，在容器上调用即可
+
+     </script>
+ </body>
+ </html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>task27-4</title>
+<style>
+	/*初始化和重置*/
+	html,body,ul,li,h3,p{
+		margin: 0;
+		padding: 0;
+	}
+	li{
+		list-style-type: none;
+	}
+	a{
+		text-decoration: none;
+	}
+	html,body,div.carousel,ul.img-ct{
+		height: 100%;
+		width: 100%;
+	}
+
+	/*设置窗口*/
+	.carousel{
+		position: relative;
+		overflow: hidden;
+	}
+	/*设置面板*/
+	.carousel ul.img-ct{
+		position: absolute;  /*后面用JS控制位置*/
+	}
+	.carousel li{
+		position: relative;
+		float: left;
+		height: 100%;
+	}
+	.carousel ul.img-ct::after{
+		content: "";
+		display: block;
+		clear: both;
+	}
+	.carousel .cover{
+		position: absolute;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		right: 0;
+		background-repeat: no-repeat;
+		background-position: center center;
+		background-size: cover;
+	}
+	.carousel .main{
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		text-align: center;
+		color: pink;
+	}
+	.carousel .main h3{
+		font-size: 34px;
+		margin: 20px 0;
+	}
+	.carousel .main p{
+		font-size: 16px;
+	}
+
+	/*翻页箭头*/
+	.carousel .arrow{
+		position: absolute;
+		top: 50%;
+		margin-top: -32px;
+		width: 37px;
+		height: 64px;
+		line-height: 64px;
+		text-align: center;   /*脱离文档流变成块级框*/
+		color: #fff;
+		font-size: 60px;
+		font-weight: 700;
+	}
+	.carousel .arrow:hover{
+		border-radius: 5px;
+		background-color: rgba(50%,50%,50%,0.5);
+	}
+	.carousel .pre{
+		left: 10px;
+	}
+	.carousel .next{
+		right: 10px;
+	}
+
+	/*轮播切换标记*/
+	.bullet{
+		position: absolute;
+		bottom: 10px;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+	.bullet li{
+		display: inline-block;
+		width: 10px;
+		height: 10px;
+		background-color: #fff;
+		border-radius: 20px;
+		cursor: pointer;
+		margin: 5px;
+	}
+	.bullet li.active{
+		background-color: red;
+	}
+</style>
+</head>
+<body>
+	<div class="carousel">
+		<ul class="img-ct">
+			<li>
+				<div class="cover" data-bg-img="img/1.jpg"></div>
+				<div class="main">
+					<h3>夜空中最亮的星</h3>
+					<p>是否在意</p>
+				</div>
+			</li>
+			<li>
+				<div class="cover" data-bg-img="img/2.jpg"></div>
+				<div class="main">
+					<h3>生活不止眼前的苟且</h3>
+					<p>还有诗和远方的田野</p>
+				</div>
+			</li>
+			<li>
+				<div class="cover" data-bg-img="img/3.jpg"></div>
+				<div class="main">
+					<h3>睡在我上铺的兄弟</h3>
+					<p>无声无息的你</p>
+				</div>
+			</li>
+			<li>
+				<div class="cover" data-bg-img="img/4.jpg"></div>
+				<div class="main">
+					<h3>你要离开</h3>
+					<p>我知道很简单</p>
+				</div>
+			</li>
+		</ul>
+		<ul class="bullet">
+			<li class="active"></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+	</div>
+
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>
+    	$(function(){
+    		$.fn.carouselFullScreen = function(){
+        		var $me = $(this),
+	    			$ct = $me.find(".img-ct"),
+	    			$items = $ct.children(),
+	    			$bullet = $me.find(".bullet"),
+	    			imgWidth = $(window).width(),
+	    			imgCount = $items.length;
+
+	    		$ct.prepend( $items.last().clone() );
+	    		$ct.append( $items.first().clone() );
+	    		$ct.find('li').css('width', imgWidth);
+	    		$ct.find('.cover').css('width', imgWidth);
+	    		var imgRealCount = imgCount+2;
+
+	    		$ct.css({  //初始化图片位置的设置
+	    			left: 0-imgWidth,
+	    			width: imgRealCount*imgWidth
+	    		});
+
+	    		var curIdx = 0;  //设置当前图片对应的bullet指数
+	    		var isAnimate = false;  //设置状态锁，防止连续点击副作用
+
+	    		$bullet.find('li').on('click', function(){
+	    			var idx = $(this).index();
+	    			if( idx>curIdx ){
+	    				showNext(idx-curIdx);
+	    			}else if( idx<curIdx ){
+	    				showPre(curIdx-idx);
+	    			}
+	    		});
+
+	    		function showNext(idxCount){
+	    			var idxCount = idxCount || 1;  //有idx就用idx没有参数就自动轮播为1了
+	    			if(!isAnimate){
+	    				isAnimate = true;
+	    				//核心代码
+	    				setBg(curIdx+2);
+		    			$ct.animate({left: '-='+(imgWidth*idxCount)},150,function(){
+	    					curIdx = (curIdx + idxCount)%imgCount;
+	    					if(curIdx === 0){
+	    						$ct.css({left: 0-imgWidth});
+	    					}
+	    					isAnimate = false;
+	    					setBullet();
+		    			});
+	    			}
+	    		}
+	    		function showPre(idxCount){
+	    			var idxCount = idxCount || 1;
+	    			if(!isAnimate){
+	    				isAnimate = true;
+	    				//核心代码
+	    				setBg(curIdx);
+		    			$ct.animate({left: '+='+(imgWidth*idxCount)},150,function(){
+	    					curIdx = (imgCount+curIdx-idxCount)%imgCount;
+	    					if(curIdx === (imgCount-1)){
+	    						$ct.css({left: 0-imgWidth*imgCount});
+	    					}
+	    					isAnimate = false;
+	    					setBullet();
+		    			});
+	    			}
+	    		}
+
+	    		function setBg(idx){
+	    			var idx = idx || 0,
+	    				$node = $ct.children().eq(idx),
+	    				$cover = $node.find('.cover'),
+	    				imgUrl = $cover.attr('data-bg-img');
+	    			if($node.data('isBgSet')) return;
+	    			$cover.css('background-image', 'url('+imgUrl+')');
+	    			$node.data('isBgSet', true);
+	    		}
+
+	    		function setBullet(){
+	    			$bullet.find('li').removeClass('active')
+	    							  .eq(curIdx).addClass('active');
+	    		}
+
+	    		//自动轮播函数
+	    		function autoShow(){
+	    			clock = setInterval(function(){
+	    				showNext();
+	    			}, 4000);
+	    		}
+	    		function stopAuto(){
+	    			clearInterval(clock);  //这个是用来扩展的，页面上可以设置一个按钮控制是否自动轮播
+	    		}
+	    		setBg(1);
+	    		autoShow();  //调用自动轮播
+    		}
+    		
+    		$(".carousel").carouselFullScreen();
+    	});
+    </script>
+</body>
+</html>
